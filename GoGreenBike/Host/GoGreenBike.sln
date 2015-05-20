@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "testArdu\Controller.csproj", "{89C07736-6635-42AF-BCE1-F29C0A6513E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base", "PluginBase\Base.csproj", "{CAAD722A-B7B5-4373-807A-BD33451092EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI-Arduino", "UI-Arduino\UI-Arduino.csproj", "{FCA5BA41-1E99-4825-B5EA-EC0D6EA14A44}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89C07736-6635-42AF-BCE1-F29C0A6513E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C07736-6635-42AF-BCE1-F29C0A6513E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C07736-6635-42AF-BCE1-F29C0A6513E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C07736-6635-42AF-BCE1-F29C0A6513E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAAD722A-B7B5-4373-807A-BD33451092EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAAD722A-B7B5-4373-807A-BD33451092EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAAD722A-B7B5-4373-807A-BD33451092EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAAD722A-B7B5-4373-807A-BD33451092EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCA5BA41-1E99-4825-B5EA-EC0D6EA14A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCA5BA41-1E99-4825-B5EA-EC0D6EA14A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCA5BA41-1E99-4825-B5EA-EC0D6EA14A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCA5BA41-1E99-4825-B5EA-EC0D6EA14A44}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
