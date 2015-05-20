@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base", "PluginBase\Base.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI-Arduino", "UI-Arduino\UI-Arduino.csproj", "{FCA5BA41-1E99-4825-B5EA-EC0D6EA14A44}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arduino", "Arduino", "{CAB9F44B-5170-4A5A-9BA7-BC00637F2639}"
+	ProjectSection(SolutionItems) = preProject
+		..\NANO-WorkingJSON\NANO-WorkingJSON.ino = ..\NANO-WorkingJSON\NANO-WorkingJSON.ino
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
