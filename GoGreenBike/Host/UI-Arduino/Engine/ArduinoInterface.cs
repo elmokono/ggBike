@@ -29,7 +29,7 @@ namespace goGreenBike.UI.Engine
         private bool hasCapabilities;
 
         private const int SYNCTIMEOUT = 3000;
-        private const int BAUDRATE = 19200;
+        private const int BAUDRATE = 9600;
 
         public event Click ResetClick;
         public event Connect OnConnect;
@@ -187,7 +187,7 @@ namespace goGreenBike.UI.Engine
 
                 if (response.cmd.Equals("Spins"))
                 {
-                    var spins = Newtonsoft.Json.JsonConvert.DeserializeObject<ArduinoSpinsResponse>(s);
+                    var spins = Newtonsoft.Json.JsonConvert.DeserializeObject<ArduinoSpinsResponse>(response.val);
                     Console.WriteLine("Spins {0} between {1} and {2} ({3})", 
                         spins.Spins, spins.StartMillis, spins.EndMillis, (spins.EndMillis - spins.StartMillis)
                     );
