@@ -27,12 +27,30 @@ const String buttonActions[1] = {
   "reset"
 };
 
+//SENSOR SPECS////////////////////////////////
+//ggSpins counter
+//samples each 1s, 5s 10s
+
+int ggSpins[3] = { 0, 0, 0 };
+long ggStartMillis[3] = { 0, 0, 0 };
+long ggSampleRates[3] = { 1000, 5000, 10000 };
+
+int ggLastRead = 999;
+int ggSpins1 = 0;
+long ggStartMillis1 = 0;
+
+//sensor and leds
+const int ggSensorPin = A0;
+const int ggLedControl = 2;
+const int ggLedFlag = 13;
+const int ggThreshold = 20;
+
 unsigned long syncLastTime;
 bool inSync;
 /***************************************************************/
 void setup() {
 
-  Serial.begin(19200); //set serial to 9600 baud rate
+  Serial.begin(9600); //set serial to 9600 baud rate
   Serial.setTimeout(100); //250 milis until close
 
   //buttons
@@ -45,6 +63,10 @@ void setup() {
   for (int i = 0; i < 2; i++) {
     pinMode(ledPins[i], OUTPUT);
   }
+
+  //sensor
+  pinMode(ggLedControl, OUTPUT);
+  pinMode(ggLedFlag, OUTPUT);
 
   syncLastTime = 0;
   inSync = true;
@@ -96,8 +118,12 @@ void loop() {
     }
   }
 
+  //sensors
+  sensorLoop();
+
+
   //buttons
-  buttonLoop();
+  //buttonLoop();
 
   delay(10);
 
@@ -166,6 +192,49 @@ void ledLoop(String message)
 
     Serial.println(_cj);
   }
+}
+/***************************************************************/
+void sensorLoop()
+{
+  digitalWrite(ggLedControl, HIGH); //send signal
+  delay(2); //wait..
+  int sensorRead1 = analogRead(ggSensorPin); //capture info
+  long endMillis = millis();
+
+  //change of signal, count spin
+  if ((sensorRead1 < ggThreshold) && (ggLastRead >= ggThreshold))
+  {
+    //add spin counter
+    for (int i = 0; i < arrayLength(ggSpins); i++) {
+      ggSpins[i]++;
+    }
+  }
+  /*if ((sensorRead1 < ggThreshold) && (ggLastRead >= ggThreshold))
+  {
+    //add spin counter
+    ggSpins1++;
+  }*/
+
+  ggLastRead = sensorRead1;
+
+  //send feedback for every sample
+  for (int i = 0; i < arrayLength(ggSampleRates); i++)
+  {
+    if ((endMillis - ggStartMillis[i]) >= ggSampleRates[i])
+    {
+      String val = "{\'Spins':'" + String(ggSpins[i]) + "','StartMillis':'" + String(ggStartMillis[i]) + "','EndMillis':'" + String(endMillis) + "'}";
+      Serial.println(buildResponse("Spins", true, val));
+      ggStartMillis[i] = millis();
+      ggSpins[i] = 0;
+    }
+  }
+/*if ((endMillis - ggStartMillis1) >= 1000)
+  {
+    String val = "{\'Spins':'" + String(ggSpins1) + "','StartMillis':'" + String(ggStartMillis1) + "','EndMillis':'" + String(endMillis) + "'}";
+    Serial.println(buildResponse("Spins", true, val));
+    ggStartMillis1 = millis();
+    ggSpins1 = 0;
+  }*/
 }
 /***************************************************************/
 void buttonLoop()

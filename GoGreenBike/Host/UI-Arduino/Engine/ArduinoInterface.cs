@@ -8,7 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace goGreenBike.UI.Engine
-{    
+{
+    public delegate void Spin(long millis, int spins);
     public delegate void Click();
     public delegate void Connect();
     public delegate void Disconnect();
@@ -31,6 +32,7 @@ namespace goGreenBike.UI.Engine
         private const int SYNCTIMEOUT = 3000;
         private const int BAUDRATE = 9600;
 
+        public event Spin Spins;
         public event Click ResetClick;
         public event Connect OnConnect;
         public event Connect OnDisconnect;
@@ -188,9 +190,14 @@ namespace goGreenBike.UI.Engine
                 if (response.cmd.Equals("Spins"))
                 {
                     var spins = Newtonsoft.Json.JsonConvert.DeserializeObject<ArduinoSpinsResponse>(response.val);
-                    Console.WriteLine("Spins {0} between {1} and {2} ({3})", 
-                        spins.Spins, spins.StartMillis, spins.EndMillis, (spins.EndMillis - spins.StartMillis)
-                    );
+                    if (Spins != null)
+                    {
+                        Spins((spins.EndMillis - spins.StartMillis), spins.Spins);
+                    }
+
+                    //Console.WriteLine("Spins {0} between {1} and {2} ({3})", 
+                    //    spins.Spins, spins.StartMillis, spins.EndMillis, (spins.EndMillis - spins.StartMillis)
+                    //);
                 }
             }
             else

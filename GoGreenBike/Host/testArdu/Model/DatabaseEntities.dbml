@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="test_daniel" Class="DatabaseEntitiesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=sm-arba-vdev01;Initial Catalog=test_daniel;Persist Security Info=True;User ID=webappuser" SettingsObjectName="goGreenBike.Properties.Settings" SettingsPropertyName="test_danielConnectionString" Provider="System.Data.SqlClient" />
+  <Function Name="dbo.ggAddMark" Method="ggAddMark">
+    <Parameter Name="DeviceID" Parameter="deviceID" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="Spins" Parameter="spins" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Millis" Parameter="millis" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
