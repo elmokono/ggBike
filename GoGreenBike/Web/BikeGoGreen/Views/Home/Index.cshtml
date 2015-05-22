@@ -1,0 +1,127 @@
+﻿@model BikeGoGreen.Models.HomeIndexModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<div class="row">
+    <div class="col-sm-6 text-center">
+        <div style="margin-top: 30px; font-size: 40px">
+            <i class="fa fa-bicycle"></i>&nbsp;<select id="listRunners"></select>
+            <br />
+            <button id="buttonStartTrial" class="btn btn-lg btn-success"><i class="fa fa-flag-checkered"></i>&nbsp;Iniciar Prueba!</button>
+            <button id="buttonStopTrial" class="btn btn-lg btn-danger"><i class="fa fa-ban"></i>&nbsp;Detener Prueba</button>
+
+        </div>
+    </div>
+    <div class="col-sm-6 text-center">
+        <span style=" font-size: 100px">
+            <i class="fa fa-tachometer"></i>&nbsp;<span id="currentSpeed">0.00</span>
+        </span> km/h
+        <br />
+        Total Recorrido: <b><span id="totalKms">0.00</span> km</b>&nbsp;
+        Velocidad Promedio: <b><span id="avgSpeed">0.00</span> km/h</b>
+    </div>
+</div>
+<hr />
+<table id="topTenTable" class="table">
+    <tr>
+        <th>Corredor</th>
+        <th>Km Totales</th>
+        <th>Km/h</th>
+    </tr>
+</table>
+<script>
+
+    var app;
+    app = app || (function () {
+        var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="progress progress-striped active"><div class="progress-bar progress-bar-default" style="width: 100%;"></div></div><div class="text-center">Now Loading, please wait..</div></div></div></div></div>');
+        return {
+            //--------------------------------------
+            showPleaseWait: function () {
+                pleaseWaitDiv.modal();
+            },
+            //--------------------------------------
+            hidePleaseWait: function () {
+                pleaseWaitDiv.modal('hide');
+            },
+            //--------------------------------------
+            goto: function (url) {
+                app.showPleaseWait();
+                location.href = url;
+            },
+            //--------------------------------------
+            getCurrentSpeed: function () {
+
+                $.getJSON('api/Statistics/CurrentSpeed/BIKE001', function (data) {
+                    var speed = (Math.round(parseFloat(data) * 100) / 100).toString();
+                    $('#currentSpeed').html(speed);
+                });
+            },
+            //--------------------------------------
+            currentRunnerId: function () {
+                return $('#listRunners').val();
+            },
+            //--------------------------------------
+            getRunner: function () {
+                $.getJSON('api/Statistics/Runner/' + app.currentRunnerId(), function (data) {
+                    $('#avgSpeed').html((Math.round(parseFloat(data.kmh) * 100) / 100).toString());
+                    $('#totalKms').html((Math.round(parseFloat(data.meters) / 1000 * 100) / 100).toString());
+                });
+            },
+            //--------------------------------------
+            getRunners: function () {
+                $.getJSON('api/Statistics/Runners', function (data) {
+
+                    $('#listRunners option').remove();
+
+                    for (var i = 0; i < data.length; i++) {
+                        var option = $('<option></option>').text(data[i].FullName).val(data[i].Id);
+                        $('#listRunners').append(option);
+                    }
+
+                    //initialize
+                    setInterval(app.getCurrentSpeed, 1000);
+                    setInterval(app.getRunner, 1000);
+                    setInterval(app.getTopTen, 11000);
+                    $('#buttonStopTrial').click(function () { app.stopTrial(); });
+                    $('#buttonStartTrial').click(function () { app.startTrial(); });
+
+                });
+            },
+            //--------------------------------------
+            getTopTen: function () {
+                $.getJSON('api/Statistics/TopTen', function (data) {
+
+                    $('#topTenTable tr').not(':first')/*.not(':last')*/.remove();
+                    var html = '';
+                    for (var i = 0; i < data.length; i++) {
+                        html +=
+                            '<tr><td>' + data[i].runnerFullName
+                            + '</td><td>' + (Math.round(parseFloat(data[i].meters) / 1000 * 100) / 100).toString()
+                            + '</td><td>' + (Math.round(parseFloat(data[i].kmh) * 100) / 100).toString()
+                            + '</td></tr>'
+                        ;
+                    }
+                    $('#topTenTable tr').first().after(html);
+                });
+            },
+            //--------------------------------------
+            stopTrial: function () {
+                $.post('api/Statistics/StopTrial/BIKE001', '', function (data, textStatus) {
+                    if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); }
+                }, "json");
+            },
+            //--------------------------------------
+            startTrial: function () {
+                $.post('api/Statistics/StartTrial/BIKE001/' + app.currentRunnerId(), '', function (data, textStatus) {
+                    if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); }
+                }, "json");
+            },
+            //--------------------------------------
+        };
+    })();
+
+    $(document).ready(function () {
+        app.getRunners();
+    });
+</script>

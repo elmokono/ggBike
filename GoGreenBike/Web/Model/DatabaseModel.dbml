@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="GoGreenBikeDatabase" Class="DatabaseModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=P:\GoGreenBike\Host\testArdu\bin\Debug\GoGreenBikeDatabase.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="Model.Properties.Settings" SettingsPropertyName="GoGreenBikeDatabaseConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Devices" Member="Devices">
+    <Type Name="Device">
+      <Column Name="Id" Type="System.String" DbType="NChar(25) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Circunference" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Trials" Member="Trials">
+    <Type Name="Trial">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RunnerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Trial_Spin" Member="Spins" ThisKey="Id" OtherKey="TrialID" Type="Spin" />
+      <Association Name="Runner_Trial" Member="Runner" ThisKey="RunnerId" OtherKey="Id" Type="Runner" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Runners" Member="Runners">
+    <Type Name="Runner">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EMail" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="Runner_Trial" Member="Trials" ThisKey="Id" OtherKey="RunnerId" Type="Trial" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Spins" Member="Spins">
+    <Type Name="Spin">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Millis" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Spins" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TrialID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Trial_Spin" Member="Trial" ThisKey="TrialID" OtherKey="Id" Type="Trial" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.GetCurrent" Method="GetCurrent">
+    <Parameter Name="deviceId" Type="System.String" DbType="NChar(25)" />
+    <Parameter Name="gapMillis" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetCurrentResult">
+      <Column Name="trialId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="runnerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="rpm" Type="System.Decimal" DbType="Decimal(38,18)" CanBeNull="true" />
+      <Column Name="kmh" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetRunner" Method="GetRunner">
+    <Parameter Name="runnerId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetRunnerResult">
+      <Column Name="runnerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="runnerEmail" Type="System.String" DbType="NChar(255)" CanBeNull="true" />
+      <Column Name="runnerFullName" Type="System.String" DbType="NChar(255)" CanBeNull="true" />
+      <Column Name="ms" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="spins" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="hs" Type="System.Decimal" DbType="Decimal(23,12)" CanBeNull="true" />
+      <Column Name="rpm" Type="System.Decimal" DbType="Decimal(38,19)" CanBeNull="true" />
+      <Column Name="meters" Type="System.Decimal" DbType="Decimal(34,7)" CanBeNull="true" />
+      <Column Name="kmh" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.StopTrial" Method="StopTrial">
+    <Parameter Name="deviceId" Type="System.String" DbType="NChar(25)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.StartTrial" Method="StartTrial">
+    <Parameter Name="deviceId" Type="System.String" DbType="NChar(25)" />
+    <Parameter Name="runnerId" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
