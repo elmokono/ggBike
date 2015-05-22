@@ -39,10 +39,11 @@ namespace goGreenBike.Controller
             Console.WriteLine("Spins {0} in {1}m",
                 spins, millis
             );
-            /*using (var db = new Model.DatabaseEntitiesDataContext())
+            using (var db = new Model.DatabaseEntitiesDataContext())
             {
-                db.ggAddMark(deviceID, spins, Convert.ToInt32(millis));
-            }*/
+                db.AddSpins(deviceID, Convert.ToInt32(millis), spins);
+                db.SubmitChanges();
+            }
         }
 
         void ui_ResetClick()

@@ -32,7 +32,7 @@ const String buttonActions[1] = {
 //samples each 1s, 5s 10s
 
 int ggSpins[3] = { 0, 0, 0 };
-long ggStartMillis[3] = { 0, 0, 0 };
+long ggStartMillis[3] = { 0, 333, 666 };
 long ggSampleRates[3] = { 1000, 5000, 10000 };
 
 int ggLastRead = 999;
@@ -43,7 +43,10 @@ long ggStartMillis1 = 0;
 const int ggSensorPin = A0;
 const int ggLedControl = 2;
 const int ggLedFlag = 13;
-const int ggThreshold = 20;
+
+//auto-calibrate
+int ggThreshold = 512;
+int ggMinSensed = 1024;
 
 unsigned long syncLastTime;
 bool inSync;
@@ -66,6 +69,7 @@ void setup() {
 
   //sensor
   pinMode(ggLedControl, OUTPUT);
+  pinMode(ggSensorPin, INPUT);
   pinMode(ggLedFlag, OUTPUT);
 
   syncLastTime = 0;
@@ -125,7 +129,7 @@ void loop() {
   //buttons
   //buttonLoop();
 
-  delay(10);
+  delay(5);
 
   //check sync
   checkSync();
@@ -228,13 +232,22 @@ void sensorLoop()
       ggSpins[i] = 0;
     }
   }
-/*if ((endMillis - ggStartMillis1) >= 1000)
-  {
-    String val = "{\'Spins':'" + String(ggSpins1) + "','StartMillis':'" + String(ggStartMillis1) + "','EndMillis':'" + String(endMillis) + "'}";
-    Serial.println(buildResponse("Spins", true, val));
-    ggStartMillis1 = millis();
-    ggSpins1 = 0;
-  }*/
+  /*if ((endMillis - ggStartMillis1) >= 1000)
+    {
+      String val = "{\'Spins':'" + String(ggSpins1) + "','StartMillis':'" + String(ggStartMillis1) + "','EndMillis':'" + String(endMillis) + "'}";
+      Serial.println(buildResponse("Spins", true, val));
+      ggStartMillis1 = millis();
+      ggSpins1 = 0;
+    }*/
+
+  //auto-calibration
+  if (ggLastRead < ggMinSensed) {
+    ggMinSensed = ggLastRead;
+    ggThreshold = ((1024 - ggMinSensed) / 2) + ggMinSensed; //10%
+  }
+  
+  //Serial.println(String(ggLastRead));
+
 }
 /***************************************************************/
 void buttonLoop()
