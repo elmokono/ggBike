@@ -14,6 +14,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arduino", "Arduino", "{CAB9
 		..\NANO-WorkingJSON\NANO-WorkingJSON.ino = ..\NANO-WorkingJSON\NANO-WorkingJSON.ino
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{5B689CF4-B05D-4534-99A6-033370EAAACE}"
+	ProjectSection(SolutionItems) = preProject
+		..\Database\GoGreenBikeDatabase.mdf = ..\Database\GoGreenBikeDatabase.mdf
+		..\Database\GoGreenBikeDatabase_log.ldf = ..\Database\GoGreenBikeDatabase_log.ldf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
