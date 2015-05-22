@@ -16,7 +16,7 @@ namespace goGreenBike.Controller
     {
         protected System.Timers.Timer poller;
         protected goGreenBike.UI.Engine.ArduinoInterface ui;
-        protected String deviceID ="BIKE001";// ConfigurationManager.AppSettings["deviceID"];
+        protected String deviceID = ConfigurationManager.AppSettings["deviceID"];
 
         public Core()
         {
@@ -39,10 +39,10 @@ namespace goGreenBike.Controller
             Console.WriteLine("Spins {0} in {1}m",
                 spins, millis
             );
-            using (var db = new Model.DatabaseEntitiesDataContext())
+            /*using (var db = new Model.DatabaseEntitiesDataContext())
             {
                 db.ggAddMark(deviceID, spins, Convert.ToInt32(millis));
-            }
+            }*/
         }
 
         void ui_ResetClick()
