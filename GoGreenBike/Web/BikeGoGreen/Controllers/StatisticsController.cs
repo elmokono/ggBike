@@ -53,7 +53,10 @@ namespace BikeGoGreen.Controllers
         {
             using (var db = new Model.DatabaseModelDataContext())
             {
-                return db.GetRunner(-1).Take(10).ToList();
+                return db.GetRunner(-1)
+                    .OrderByDescending(x => x.meters)
+                    .Take(10)
+                    .ToList();
             }
         }
 

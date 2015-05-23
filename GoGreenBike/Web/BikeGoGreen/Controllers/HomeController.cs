@@ -11,7 +11,10 @@ namespace BikeGoGreen.Controllers
         public ActionResult Index()
         {
             using (var db = new Model.DatabaseModelDataContext())
-            {                
+            {
+                db.StopTrial("BIKE001");
+                db.SubmitChanges();
+
                 return View(new Models.HomeIndexModel());
             }
         }

@@ -4,37 +4,56 @@
     ViewBag.Title = "Home Page";
 }
 <div class="row">
-    <div class="col-sm-6 text-center">
-        <div style="margin-top: 30px; font-size: 40px">
-            <i class="fa fa-bicycle"></i>&nbsp;<select id="listRunners"></select>
-            <br />
-            <button id="buttonStartTrial" class="btn btn-lg btn-success"><i class="fa fa-flag-checkered"></i>&nbsp;Iniciar Prueba!</button>
-            <button id="buttonStopTrial" class="btn btn-lg btn-danger"><i class="fa fa-ban"></i>&nbsp;Detener Prueba</button>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <div style="margin-top: 30px; font-size: 40px">
+                    <select id="listRunners"></select>
+                </div>
+                <div class="row" style="font-size: 20px">
+                    <i class="fa fa-bicycle"></i>&nbsp;Total Recorrido: <b><span id="totalKms">0.00</span> km</b>
+                    <br />
+                    <i class="fa fa-tachometer"></i>&nbsp;Velocidad Promedio: <b><span id="avgSpeed">0.00</span> km/h</b>
+                </div>
+                <br />
+                <div id="gaugeSpeed" style="width:400px; height:320px"></div>
+                <br />
+                <button id="buttonStartTrial" disabled="disabled" class="btn btn-lg btn-success"><i class="fa fa-flag-checkered"></i>&nbsp;Iniciar Prueba!</button>
+                <button id="buttonStopTrial" disabled="disabled" class="btn btn-lg btn-danger"><i class="fa fa-ban"></i>&nbsp;Detener Prueba</button>
+                <!--
+                    <span style=" font-size: 100px">
+                                <i class="fa fa-tachometer"></i>&nbsp;<span id="currentSpeed">0.00</span>
+                            </span> km/h-->
 
+            </div>
         </div>
     </div>
-    <div class="col-sm-6 text-center">
-        <span style=" font-size: 100px">
-            <i class="fa fa-tachometer"></i>&nbsp;<span id="currentSpeed">0.00</span>
-        </span> km/h
-        <br />
-        Total Recorrido: <b><span id="totalKms">0.00</span> km</b>&nbsp;
-        Velocidad Promedio: <b><span id="avgSpeed">0.00</span> km/h</b>
+    <div class="col-sm-6">
+        <table id="topTenTable" class="table">
+            <tr>
+                <th>Corredor</th>
+                <th>Km Totales</th>
+                <th>Km/h</th>
+            </tr>
+        </table>
     </div>
 </div>
-<hr />
-<table id="topTenTable" class="table">
-    <tr>
-        <th>Corredor</th>
-        <th>Km Totales</th>
-        <th>Km/h</th>
-    </tr>
-</table>
+
 <script>
 
     var app;
     app = app || (function () {
+
         var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="progress progress-striped active"><div class="progress-bar progress-bar-default" style="width: 100%;"></div></div><div class="text-center">Now Loading, please wait..</div></div></div></div></div>');
+
+        var gaugeSpeed = new JustGage({
+            id: "gaugeSpeed",
+            value: 0,
+            min: 0,
+            max: 40,
+            title: "KM/h"
+        });
+
         return {
             //--------------------------------------
             showPleaseWait: function () {
@@ -50,11 +69,15 @@
                 location.href = url;
             },
             //--------------------------------------
+            refreshSpeed: function (speed) {
+                gaugeSpeed.refresh(speed);
+            },
+            //--------------------------------------
             getCurrentSpeed: function () {
 
                 $.getJSON('api/Statistics/CurrentSpeed/BIKE001', function (data) {
-                    var speed = (Math.round(parseFloat(data) * 100) / 100).toString();
-                    $('#currentSpeed').html(speed);
+                    var speed = Math.round(parseFloat(data) * 100) / 100;
+                    app.refreshSpeed(speed);
                 });
             },
             //--------------------------------------
@@ -73,6 +96,8 @@
                 $.getJSON('api/Statistics/Runners', function (data) {
 
                     $('#listRunners option').remove();
+                    var defOption = $('<option></option>').text('-Corredores-').val('-2');
+                    $('#listRunners').append(defOption);
 
                     for (var i = 0; i < data.length; i++) {
                         var option = $('<option></option>').text(data[i].FullName).val(data[i].Id);
@@ -82,7 +107,7 @@
                     //initialize
                     setInterval(app.getCurrentSpeed, 1000);
                     setInterval(app.getRunner, 1000);
-                    setInterval(app.getTopTen, 11000);
+                    setInterval(app.getTopTen, 5500);
                     $('#buttonStopTrial').click(function () { app.stopTrial(); });
                     $('#buttonStartTrial').click(function () { app.startTrial(); });
 
@@ -108,13 +133,25 @@
             //--------------------------------------
             stopTrial: function () {
                 $.post('api/Statistics/StopTrial/BIKE001', '', function (data, textStatus) {
+
                     if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); }
+
+                    if (app.currentRunnerId() != "-2") {
+                        $('#buttonStartTrial').removeAttr('disabled');
+                        $('#buttonStopTrial').attr('disabled', 'disabled');
+                    }
+
                 }, "json");
             },
             //--------------------------------------
             startTrial: function () {
                 $.post('api/Statistics/StartTrial/BIKE001/' + app.currentRunnerId(), '', function (data, textStatus) {
+
                     if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); }
+
+                    $('#buttonStopTrial').removeAttr('disabled');
+                    $('#buttonStartTrial').attr('disabled', 'disabled');
+
                 }, "json");
             },
             //--------------------------------------
@@ -122,6 +159,23 @@
     })();
 
     $(document).ready(function () {
+
         app.getRunners();
+        app.stopTrial();
+
+        $('#listRunners').change(function () {
+
+            app.stopTrial();
+            app.refreshSpeed(0.0);
+
+            $('#buttonStopTrial').attr('disabled', 'disabled');
+
+            if (app.currentRunnerId() == "-2") {
+                $('#buttonStartTrial').attr('disabled', 'disabled');
+            }
+            else {
+                $('#buttonStartTrial').removeAttr('disabled');
+            }
+        });
     });
 </script>

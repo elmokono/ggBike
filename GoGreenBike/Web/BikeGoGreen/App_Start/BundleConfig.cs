@@ -23,6 +23,10 @@ namespace BikeGoGreen
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/gauges").Include(
+                      "~/Scripts/raphael.2.1.0.min.js",
+                      "~/Scripts/justgage.1.0.1.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.css",

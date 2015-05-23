@@ -1,0 +1,41 @@
+﻿@model Model.Runner
+
+@{
+    ViewBag.Title = "Borrar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Borrar</h2>
+
+<h3>Confirma Borrar este Corredor?</h3>
+<div>
+    <h4>Corredor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EMail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EMail)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver a la Lista", "Index")
+        </div>
+    }
+</div>
