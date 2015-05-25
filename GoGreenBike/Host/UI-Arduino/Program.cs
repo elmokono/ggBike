@@ -14,7 +14,7 @@ namespace daniel.arduino
             {
                 try
                 {
-                    new goGreenBike.UI.Engine.ArduinoInterface().Start();
+                    new goGreenBike.UI.Engine.ArduinoInterface(115200).Start();
                 }
                 catch (System.Runtime.InteropServices.SEHException c)
                 {

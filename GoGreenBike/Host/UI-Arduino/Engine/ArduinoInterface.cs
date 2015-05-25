@@ -30,7 +30,7 @@ namespace goGreenBike.UI.Engine
         private bool hasCapabilities;
 
         private const int SYNCTIMEOUT = 3000;
-        private const int BAUDRATE = 9600;
+        private int BaudRate = 9600;
 
         public event Spin Spins;
         public event Click ResetClick;
@@ -42,7 +42,12 @@ namespace goGreenBike.UI.Engine
         private String[] _ledColors;
         private int _btnCount;
         private String[] _btnActions;
-        
+
+        public ArduinoInterface(Int32 baudRate)
+        {
+            this.BaudRate = baudRate;
+        }
+
         public void Start()
         {
             state = ProgramState.LookingUpArduino;
@@ -221,7 +226,7 @@ namespace goGreenBike.UI.Engine
             {
                 Console.WriteLine("Trying port {0}..", portName);
 
-                serial = new SerialPort(portName, BAUDRATE);
+                serial = new SerialPort(portName, BaudRate);
                 serial.DataBits = 8;
                 serial.Parity = Parity.None;
                 serial.StopBits = StopBits.One;
