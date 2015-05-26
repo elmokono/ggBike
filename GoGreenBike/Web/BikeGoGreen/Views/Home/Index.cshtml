@@ -3,33 +3,47 @@
 @{
     ViewBag.Title = "Home Page";
 }
+
 <div class="row">
     <div class="col-sm-6">
+
+
         <div class="row">
+
             <div class="col-sm-12 text-center">
-                <div style="margin-top: 30px; font-size: 40px">
-                    <select id="listRunners"></select>
-                </div>
-                <div class="row" style="font-size: 20px">
-                    <i class="fa fa-bicycle"></i>&nbsp;Total Recorrido: <b><span id="totalKms">0.00</span> km</b>
-                    <br />
-                    <i class="fa fa-tachometer"></i>&nbsp;Velocidad Promedio: <b><span id="avgSpeed">0.00</span> km/h</b>
+
+                <div class="panel panel-default" style="margin-top: 10px">
+                    <div class="panel-heading">
+                        <i class="fa fa-bicycle"></i>&nbsp;<select id="listDevices"><option value="BIKE001">Dispositivo 001</option></select>
+                    </div>
+                    <div class="panel-body">
+                        <select class="form-control input-lg" id="listRunners"></select>
+                        <div class="row" style="font-size: 20px">
+                            <i class="fa fa-bicycle"></i>&nbsp;Total Recorrido: <b><span id="totalKms">0.00</span> km</b>
+                            <br />
+                            <i class="fa fa-tachometer"></i>&nbsp;Velocidad Promedio: <b><span id="avgSpeed">0.00</span> km/h</b>
+                        </div>
+                    </div>
                 </div>
                 <br />
                 <div id="gaugeSpeed" style="width:400px; height:320px"></div>
                 <br />
+                <div class="row" style="font-size: 40px">
+                    <i class="fa fa-clock-o"></i>&nbsp;<span id="chronotime"></span>
+                </div>
+                <br />
                 <button id="buttonStartTrial" disabled="disabled" class="btn btn-lg btn-success"><i class="fa fa-flag-checkered"></i>&nbsp;Iniciar Prueba!</button>
                 <button id="buttonStopTrial" disabled="disabled" class="btn btn-lg btn-danger"><i class="fa fa-ban"></i>&nbsp;Detener Prueba</button>
                 <!--
-                    <span style=" font-size: 100px">
-                                <i class="fa fa-tachometer"></i>&nbsp;<span id="currentSpeed">0.00</span>
-                            </span> km/h-->
+                <span style=" font-size: 100px">
+                            <i class="fa fa-tachometer"></i>&nbsp;<span id="currentSpeed">0.00</span>
+                        </span> km/h-->
 
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        <table id="topTenTable" class="table">
+    <div class="col-sm-6 table-responsive">
+        <table id="topTenTable" class="table table-striped">
             <tr>
                 <th>Corredor</th>
                 <th>Km Totales</th>
@@ -43,6 +57,8 @@
 
     var app;
     app = app || (function () {
+
+        var speedIntervalId = 0;
 
         var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="progress progress-striped active"><div class="progress-bar progress-bar-default" style="width: 100%;"></div></div><div class="text-center">Now Loading, please wait..</div></div></div></div></div>');
 
@@ -75,7 +91,7 @@
             //--------------------------------------
             getCurrentSpeed: function () {
 
-                $.getJSON('api/Statistics/CurrentSpeed/BIKE001', function (data) {
+                $.getJSON('api/Statistics/CurrentSpeed/' + app.currentDeviceId(), function (data) {
                     var speed = Math.round(parseFloat(data) * 100) / 100;
                     app.refreshSpeed(speed);
                 });
@@ -83,6 +99,10 @@
             //--------------------------------------
             currentRunnerId: function () {
                 return $('#listRunners').val();
+            },
+            //--------------------------------------
+            currentDeviceId: function () {
+                return $('#listDevices').val();
             },
             //--------------------------------------
             getRunner: function () {
@@ -105,9 +125,9 @@
                     }
 
                     //initialize
-                    setInterval(app.getCurrentSpeed, 1000);
                     setInterval(app.getRunner, 1000);
                     setInterval(app.getTopTen, 5500);
+
                     $('#buttonStopTrial').click(function () { app.stopTrial(); });
                     $('#buttonStartTrial').click(function () { app.startTrial(); });
 
@@ -132,7 +152,14 @@
             },
             //--------------------------------------
             stopTrial: function () {
-                $.post('api/Statistics/StopTrial/BIKE001', '', function (data, textStatus) {
+
+                clearInterval(speedIntervalId);
+                chrono.Stop();
+                app.showPleaseWait();
+
+                $.post('api/Statistics/StopTrial/' + app.currentDeviceId(), '', function (data, textStatus) {
+
+                    app.hidePleaseWait();
 
                     if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); }
 
@@ -145,10 +172,16 @@
             },
             //--------------------------------------
             startTrial: function () {
-                $.post('api/Statistics/StartTrial/BIKE001/' + app.currentRunnerId(), '', function (data, textStatus) {
+
+                app.showPleaseWait();
+                $.post('api/Statistics/StartTrial/' + app.currentDeviceId() + '/' + app.currentRunnerId(), '', function (data, textStatus) {
+
+                    app.hidePleaseWait();
 
                     if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); }
 
+                    speedIntervalId = setInterval(app.getCurrentSpeed, 1000);
+                    chrono.StopReset(); chrono.Start();
                     $('#buttonStopTrial').removeAttr('disabled');
                     $('#buttonStartTrial').attr('disabled', 'disabled');
 
@@ -158,15 +191,74 @@
         };
     })();
 
+    var chrono;
+    chrono = chrono || (function () {
+
+        var startTime = 0;
+        var start = 0;
+        var end = 0;
+        var diff = 0;
+        var timerID = 0;
+
+        return {
+            Init: function () {
+                end = new Date();
+                diff = end - start;
+                diff = new Date(diff);
+                var msec = diff.getMilliseconds();
+                var sec = diff.getSeconds();
+                var min = diff.getMinutes();
+                var hr = diff.getHours() - 1;
+                if (min < 10) {
+                    min = "0" + min;
+                }
+                if (sec < 10) {
+                    sec = "0" + sec;
+                }
+                if (msec < 10) {
+                    msec = "00" + msec;
+                }
+                else if (msec < 100) {
+                    msec = "0" + msec;
+                }
+                $("#chronotime").html(min + ":" + sec + ":" + msec);
+                timerID = setTimeout("chrono.Init()", 10);
+            },
+            Start: function () {
+                start = new Date();
+                chrono.Init();
+            },
+            Continue: function () {
+                start = new Date() - diff;
+                start = new Date(start);
+                chrono.Init();
+            },
+            Reset: function () {
+                $("#chronotime").html("00:00:000");
+                start = new Date();
+            },
+            StopReset: function () {
+                $("#chronotime").html("00:00:000");
+            },
+            Stop: function () {
+                clearTimeout(timerID);
+            }
+        };
+    })();
+
     $(document).ready(function () {
 
         app.getRunners();
         app.stopTrial();
+        chrono.Reset();
 
         $('#listRunners').change(function () {
 
             app.stopTrial();
             app.refreshSpeed(0.0);
+
+            chrono.Stop();
+            chrono.Reset();
 
             $('#buttonStopTrial').attr('disabled', 'disabled');
 
