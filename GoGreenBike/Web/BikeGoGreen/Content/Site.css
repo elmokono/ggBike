@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 80px;
     padding-bottom: 20px;
 }
 
@@ -21,4 +21,19 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+
+.navbar-inverse {
+    background-color: #428BCA;
+}
+
+    .navbar-inverse .navbar-nav > li > a {
+        margin-top: 10px;
+        color: #ffffff;
+        font-size: xx-large;
+    }
+
+.label-info {
+    background-color: #4E99D9;
 }

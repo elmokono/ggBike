@@ -10,46 +10,83 @@
 
         <div class="row">
 
-            <div class="col-sm-12 text-center">
+            <div class="col-sm-12">
 
-                <div class="panel panel-default" style="margin-top: 10px">
-                    <div class="panel-heading">
-                        <i class="fa fa-bicycle"></i>&nbsp;<select id="listDevices"><option value="BIKE001">Dispositivo 001</option></select>
+                <div class="panel panel-info" style="margin-top: 10px">
+                    <div class="panel-heading" style="font-size: x-large">
+                        <i class="fa fa-gear"></i>&nbsp;<select id="listDevices"><option value="BIKE001">Bici Malaver</option></select>
+                        <i class="fa fa-bicycle"></i>&nbsp;<select class="" id="listRunners"></select>
                     </div>
-                    <div class="panel-body">
-                        <select class="form-control input-lg" id="listRunners"></select>
+                    <div class="panel-body text-center">
+
                         <div class="row" style="font-size: 20px">
                             <i class="fa fa-bicycle"></i>&nbsp;Total Recorrido: <b><span id="totalKms">0.00</span> km</b>
                             <br />
                             <i class="fa fa-tachometer"></i>&nbsp;Velocidad Promedio: <b><span id="avgSpeed">0.00</span> km/h</b>
                         </div>
+
+                        <br />
+                        <div id="gaugeSpeed" style="margin-left: 0px; width:400px; height:320px"></div>
+                        <br />
+                        <div class="row" style="font-size: 40px">
+                            <i class="fa fa-clock-o"></i>&nbsp;<span id="chronotime"></span>
+                        </div>
+                        <br />
+                        <button id="buttonStartTrial" disabled="disabled" class="btn btn-lg btn-success"><i class="fa fa-flag-checkered"></i>&nbsp;Iniciar Prueba!</button>
+                        <button id="buttonStopTrial" disabled="disabled" class="btn btn-lg btn-danger"><i class="fa fa-ban"></i>&nbsp;Detener Prueba</button>
+                        <!--
+                        <span style=" font-size: 100px">
+                                    <i class="fa fa-tachometer"></i>&nbsp;<span id="currentSpeed">0.00</span>
+                                </span> km/h-->
+
                     </div>
                 </div>
-                <br />
-                <div id="gaugeSpeed" style="width:400px; height:320px"></div>
-                <br />
-                <div class="row" style="font-size: 40px">
-                    <i class="fa fa-clock-o"></i>&nbsp;<span id="chronotime"></span>
-                </div>
-                <br />
-                <button id="buttonStartTrial" disabled="disabled" class="btn btn-lg btn-success"><i class="fa fa-flag-checkered"></i>&nbsp;Iniciar Prueba!</button>
-                <button id="buttonStopTrial" disabled="disabled" class="btn btn-lg btn-danger"><i class="fa fa-ban"></i>&nbsp;Detener Prueba</button>
-                <!--
-                <span style=" font-size: 100px">
-                            <i class="fa fa-tachometer"></i>&nbsp;<span id="currentSpeed">0.00</span>
-                        </span> km/h-->
 
             </div>
         </div>
     </div>
     <div class="col-sm-6 table-responsive">
-        <table id="topTenTable" class="table table-striped">
-            <tr>
-                <th>Corredor</th>
-                <th>Km Totales</th>
-                <th>Km/h</th>
-            </tr>
-        </table>
+        <div class="panel panel-info" style="margin-top: 10px">
+            <div class="panel-heading">
+                <i class="fa fa-bicycle"></i>&nbsp;<b>Top 10</b>
+            </div>
+            <div class="panel-body">
+                <table id="topTenTable" class="table table-striped">
+                    <tr>
+                        <th>Corredor</th>
+                        <th>Km Totales</th>
+                        <th>Km/h</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- premios -->
+        <div class="panel panel-success" style="margin-top: 10px">
+            <div class="panel-heading">
+                <i class="fa fa-trophy"></i>&nbsp;<b>Premios!</b>
+            </div>
+            <div class="panel-body">
+                <table id="pricesTable" class="table">
+                    <tr>
+                        <td>1er Puesto</td>
+                        <td></td>
+                        <td>1 Bicicleta Cope</td>
+                    </tr>
+                    <tr>
+                        <td>2do Puesto</td>
+                        <td></td>
+                        <td>1 Desayuno Peola</td>
+                    </tr>
+                    <tr>
+                        <td>3er Puesto</td>
+                        <td></td>
+                        <td>1 Viaje a Disney (malaver)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -161,7 +198,7 @@
 
                     app.hidePleaseWait();
 
-                    if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); }
+                    if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); return; }
 
                     if (app.currentRunnerId() != "-2") {
                         $('#buttonStartTrial').removeAttr('disabled');
@@ -178,7 +215,7 @@
 
                     app.hidePleaseWait();
 
-                    if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); }
+                    if (data == false) { alert('Ocurrio un error. Vuelva a intentar'); return; }
 
                     speedIntervalId = setInterval(app.getCurrentSpeed, 1000);
                     chrono.StopReset(); chrono.Start();
@@ -249,8 +286,10 @@
     $(document).ready(function () {
 
         app.getRunners();
+        app.getTopTen();
         app.stopTrial();
         chrono.Reset();
+
 
         $('#listRunners').change(function () {
 

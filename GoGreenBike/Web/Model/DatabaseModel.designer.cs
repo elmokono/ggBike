@@ -45,7 +45,8 @@ namespace Model
     #endregion
 		
 		public DatabaseModelDataContext() : 
-				base(global::Model.Properties.Settings.Default.GoGreenBikeDatabaseConnectionString, mappingSource)
+				base("Data Source=(LocalDB)\\v11.0;AttachDbFilename=P:\\GoGreenBike\\Database\\GoGreenBikeD" +
+						"atabase.mdf;Integrated Security=True;Connect Timeout=30", mappingSource)
 		{
 			OnCreated();
 		}

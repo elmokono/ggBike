@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="GoGreenBikeDatabase" Class="DatabaseModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=P:\GoGreenBike\Host\testArdu\bin\Debug\GoGreenBikeDatabase.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="Model.Properties.Settings" SettingsPropertyName="GoGreenBikeDatabaseConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="ConnectionString" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=P:\GoGreenBike\Database\GoGreenBikeDatabase.mdf;Integrated Security=True;Connect Timeout=30" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Devices" Member="Devices">
     <Type Name="Device">
       <Column Name="Id" Type="System.String" DbType="NChar(25) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />

@@ -95,6 +95,8 @@ namespace BikeGoGreen.Controllers
         [HttpPost]
         public bool StartTrial(string id, int runnerId)
         {
+            if (runnerId == -2) { return false; }
+
             using (var db = new Model.DatabaseModelDataContext())
             {
                 db.StartTrial(id, runnerId);
