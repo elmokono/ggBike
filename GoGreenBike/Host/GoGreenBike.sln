@@ -11,13 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI-Arduino", "UI-Arduino\UI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arduino", "Arduino", "{CAB9F44B-5170-4A5A-9BA7-BC00637F2639}"
 	ProjectSection(SolutionItems) = preProject
-		..\NANO-WorkingJSON\NANO-WorkingJSON.ino = ..\NANO-WorkingJSON\NANO-WorkingJSON.ino
+		..\NANO-WorkingJSON\NANO-WorkingJSON-CNY70\NANO-WorkingJSON-CNY70.ino = ..\NANO-WorkingJSON\NANO-WorkingJSON-CNY70\NANO-WorkingJSON-CNY70.ino
+		..\NANO-WorkingJSON\NANO-WorkingJSON-TCRT5000\NANO-WorkingJSON-TCRT5000.ino = ..\NANO-WorkingJSON\NANO-WorkingJSON-TCRT5000\NANO-WorkingJSON-TCRT5000.ino
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{5B689CF4-B05D-4534-99A6-033370EAAACE}"
 	ProjectSection(SolutionItems) = preProject
-		..\Database\GoGreenBikeDatabase.mdf = ..\Database\GoGreenBikeDatabase.mdf
-		..\Database\GoGreenBikeDatabase_log.ldf = ..\Database\GoGreenBikeDatabase_log.ldf
+		..\Database\test_daniel.mdf = ..\Database\test_daniel.mdf
+		..\Database\test_daniel_log.LDF = ..\Database\test_daniel_log.LDF
 	EndProjectSection
 EndProject
 Global
