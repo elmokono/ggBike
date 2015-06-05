@@ -45,8 +45,8 @@ namespace Model
     #endregion
 		
 		public DatabaseModelDataContext() : 
-				base("Data Source=(LocalDB)\\v11.0;AttachDbFilename=P:\\GoGreenBike\\Database\\GoGreenBikeD" +
-						"atabase.mdf;Integrated Security=True;Connect Timeout=30", mappingSource)
+				base("Data Source=win7dev\\sqlexpress;Initial Catalog=test_daniel;Persist Security Info=" +
+						"True;User ID=sa;Password=yayayaya", mappingSource)
 		{
 			OnCreated();
 		}

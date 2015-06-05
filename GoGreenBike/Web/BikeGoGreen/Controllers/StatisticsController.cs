@@ -8,18 +8,18 @@ namespace BikeGoGreen.Controllers
 {
     public class StatisticsController : ApiController
     {
-        [Route("api/Statistics/CurrentSpeed/{id}")]
+        [Route("api/Statistics/CurrentSpeed/{id}/{interval}")]
         [HttpGet]
-        public double CurrentSpeed(string id)
+        public double CurrentSpeed(string id, int interval)
         {
             using (var db = new Model.DatabaseModelDataContext())
             {
-                var q = db.GetCurrent(id, 10000).ToList();
+                var q = db.GetCurrent(id, interval).ToList();
                 if (q.Any())
                 {
                     return Convert.ToDouble(q.First().kmh ?? 0);
                 }
-                return 0.0;
+                return 0;
             }
         }
 
