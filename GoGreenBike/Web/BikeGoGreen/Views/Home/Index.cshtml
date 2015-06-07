@@ -96,7 +96,7 @@
     app = app || (function () {
 
         var speedIntervalId = 0;
-        var gapInterval = 5000;
+        var gapInterval = 1000;
 
         var pleaseWaitDiv = $('<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="progress progress-striped active"><div class="progress-bar progress-bar-default" style="width: 100%;"></div></div><div class="text-center">Now Loading, please wait..</div></div></div></div></div>');
 
@@ -125,7 +125,7 @@
             //--------------------------------------
             refreshSpeed: function (speed) {
                 gaugeSpeed.refresh(speed);
-                console.log(speed);
+                //console.log(speed);
             },
             //--------------------------------------
             getCurrentSpeed: function () {

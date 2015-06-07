@@ -20,24 +20,24 @@
         <elementListCompartment Id="c1cb78f7-f933-48f0-8344-ac29f1d81255" absoluteBounds="0.765, 1.585, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="a76971b5-c825-46b0-ad05-3823817267c6" absoluteBounds="6.25, 0.875, 2, 1.5891951497395833">
-      <DataClassMoniker Name="/DatabaseModelDataContext/Spin" />
-      <nestedChildShapes>
-        <elementListCompartment Id="85c41b4d-a000-4743-9e28-b41d2c088fbd" absoluteBounds="6.265, 1.335, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(2.75 : 1.75525024414062); (3.5 : 1.75525024414062)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 1.75525024414062); (3.5 : 1.75525024414062)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/DatabaseModelDataContext/Runner/Runner_Trial" />
       <nodes>
         <classShapeMoniker Id="7f17a54a-ae43-4461-b6a6-8dcfab0a0075" />
         <classShapeMoniker Id="592ab30f-eab4-4149-8468-faf6c49396fc" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 1.71242390950521); (6.25 : 1.71242390950521)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <classShape Id="8d838252-776a-49e4-a201-e30121ee3564" absoluteBounds="7.125, 2, 2, 1.5891951497395831">
+      <DataClassMoniker Name="/DatabaseModelDataContext/Spin" />
+      <nestedChildShapes>
+        <elementListCompartment Id="262d8b06-f43f-40e6-bd0e-6678c655adda" absoluteBounds="7.14, 2.46, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 2.21242390950521); (7.125 : 2.21242390950521)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/DatabaseModelDataContext/Trial/Trial_Spin" />
       <nodes>
         <classShapeMoniker Id="592ab30f-eab4-4149-8468-faf6c49396fc" />
-        <classShapeMoniker Id="a76971b5-c825-46b0-ad05-3823817267c6" />
+        <classShapeMoniker Id="8d838252-776a-49e4-a201-e30121ee3564" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>
