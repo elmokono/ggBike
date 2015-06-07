@@ -35,7 +35,7 @@ namespace goGreenBike.Controller
             ui.Start();
         }
 
-        void ui_Spins(long millis, int spins)
+        void ui_Spins(long millis, double spins)
         {
             Console.WriteLine("Spins {0} in {1}m",
                 spins, millis

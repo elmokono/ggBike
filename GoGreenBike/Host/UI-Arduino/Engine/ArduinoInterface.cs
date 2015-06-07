@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace goGreenBike.UI.Engine
 {
-    public delegate void Spin(long millis, int spins);
+    public delegate void Spin(long millis, double spins);
     public delegate void Click();
     public delegate void Connect();
     public delegate void Disconnect();

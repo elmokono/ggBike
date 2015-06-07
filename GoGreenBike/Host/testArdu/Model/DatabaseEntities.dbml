@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="GoGreenBikeDatabase" Class="DatabaseEntitiesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=P:\GoGreenBike\Database\GoGreenBikeDatabase.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="goGreenBike.Properties.Settings" SettingsPropertyName="GoGreenBikeDatabaseConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="test_daniel" Class="DatabaseEntitiesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="ConnectionString" ConnectionString="Data Source=win7dev\sqlexpress;Initial Catalog=test_daniel;Persist Security Info=True;User ID=sa;Password=yayayaya" Provider="System.Data.SqlClient" />
   <Function Name="dbo.AddSpins" Method="AddSpins">
     <Parameter Name="deviceId" Type="System.String" DbType="NChar(25)" />
     <Parameter Name="millis" Type="System.Int32" DbType="Int" />
-    <Parameter Name="spins" Type="System.Int32" DbType="Int" />
+    <Parameter Name="spins" Type="System.Double" DbType="Float" />
     <Return Type="System.Int32" />
   </Function>
 </Database>

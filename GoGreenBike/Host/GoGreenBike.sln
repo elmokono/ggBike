@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arduino", "Arduino", "{CAB9F44B-5170-4A5A-9BA7-BC00637F2639}"
 	ProjectSection(SolutionItems) = preProject
 		..\NANO-WorkingJSON\NANO-WorkingJSON-CNY70\NANO-WorkingJSON-CNY70.ino = ..\NANO-WorkingJSON\NANO-WorkingJSON-CNY70\NANO-WorkingJSON-CNY70.ino
+		..\NANO-WorkingJSON\NANO-WorkingJSON-TCRT5000-v2\NANO-WorkingJSON-TCRT5000-v2.ino = ..\NANO-WorkingJSON\NANO-WorkingJSON-TCRT5000-v2\NANO-WorkingJSON-TCRT5000-v2.ino
 		..\NANO-WorkingJSON\NANO-WorkingJSON-TCRT5000\NANO-WorkingJSON-TCRT5000.ino = ..\NANO-WorkingJSON\NANO-WorkingJSON-TCRT5000\NANO-WorkingJSON-TCRT5000.ino
 	EndProjectSection
 EndProject

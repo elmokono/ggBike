@@ -15,7 +15,7 @@ namespace goGreenBike.UI.Engine
 
     class ArduinoSpinsResponse
     {
-        public Int32 Spins { get; set; }
+        public Double Spins { get; set; }
         public long StartMillis { get; set; }
         public long EndMillis { get; set; }
     }
