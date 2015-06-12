@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="test_daniel" Class="DatabaseModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="ConnectionString" ConnectionString="Data Source=win7dev\sqlexpress;Initial Catalog=test_daniel;Persist Security Info=True;User ID=sa;Password=yayayaya" Provider="System.Data.SqlClient" />
+  <Connection Mode="ConnectionString" ConnectionString="Data Source=sm-arba-vdev01;Initial Catalog=test_daniel;Persist Security Info=True;User ID=webAppUser;Password=w3b@ppuS3R" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Devices" Member="Devices">
     <Type Name="Device">
       <Column Name="Id" Type="System.String" DbType="NChar(25) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -16,14 +16,6 @@
       <Association Name="Runner_Trial" Member="Runner" ThisKey="RunnerId" OtherKey="Id" Type="Runner" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Runners" Member="Runners">
-    <Type Name="Runner">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="FullName" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="EMail" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
-      <Association Name="Runner_Trial" Member="Trials" ThisKey="Id" OtherKey="RunnerId" Type="Trial" />
-    </Type>
-  </Table>
   <Table Name="dbo.Spins" Member="Spins">
     <Type Name="Spin">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -32,6 +24,23 @@
       <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="TrialID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Trial_Spin" Member="Trial" ThisKey="TrialID" OtherKey="Id" Type="Trial" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Runners" Member="Runners">
+    <Type Name="Runner">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EMail" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="GroupName" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="Runner_Trial" Member="Trials" ThisKey="Id" OtherKey="RunnerId" Type="Trial" />
+      <Association Name="Group_Runner" Member="Group" ThisKey="GroupName" OtherKey="GroupName" Type="Group" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Groups" Member="Groups">
+    <Type Name="Group">
+      <Column Name="GroupName" Type="System.String" DbType="NChar(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="Group_Runner" Member="Runners" ThisKey="GroupName" OtherKey="GroupName" Type="Runner" />
     </Type>
   </Table>
   <Function Name="dbo.GetCurrent" Method="GetCurrent">
@@ -48,12 +57,18 @@
     <Parameter Name="deviceId" Type="System.String" DbType="NChar(25)" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.StartTrial" Method="StartTrial">
+    <Parameter Name="deviceId" Type="System.String" DbType="NChar(25)" />
+    <Parameter Name="runnerId" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.GetRunner" Method="GetRunner">
     <Parameter Name="runnerId" Type="System.Int32" DbType="Int" />
     <ElementType Name="GetRunnerResult">
       <Column Name="runnerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="runnerEmail" Type="System.String" DbType="NChar(255)" CanBeNull="true" />
       <Column Name="runnerFullName" Type="System.String" DbType="NChar(255)" CanBeNull="true" />
+      <Column Name="runnerGroupName" Type="System.String" DbType="NChar(255)" CanBeNull="true" />
       <Column Name="ms" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="spins" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="hs" Type="System.Decimal" DbType="Decimal(23,12)" CanBeNull="true" />
@@ -61,10 +76,5 @@
       <Column Name="meters" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="kmh" Type="System.Double" DbType="Float" CanBeNull="true" />
     </ElementType>
-  </Function>
-  <Function Name="dbo.StartTrial" Method="StartTrial">
-    <Parameter Name="deviceId" Type="System.String" DbType="NChar(25)" />
-    <Parameter Name="runnerId" Type="System.Int32" DbType="Int" />
-    <Return Type="System.Int32" />
   </Function>
 </Database>

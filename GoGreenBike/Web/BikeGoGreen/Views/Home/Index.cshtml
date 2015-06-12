@@ -54,6 +54,7 @@
                 <table id="topTenTable" class="table table-striped">
                     <tr>
                         <th>Corredor</th>
+                        <th>Grupo</th>
                         <th>Km Totales</th>
                         <th>Km/h</th>
                     </tr>
@@ -181,6 +182,7 @@
                     for (var i = 0; i < data.length; i++) {
                         html +=
                             '<tr><td>' + data[i].runnerFullName
+                            + '</td><td>' + data[i].runnerGroupName
                             + '</td><td>' + (Math.round(parseFloat(data[i].meters) / 1000 * 100) / 100).toString()
                             + '</td><td>' + (Math.round(parseFloat(data[i].kmh) * 100) / 100).toString()
                             + '</td></tr>'

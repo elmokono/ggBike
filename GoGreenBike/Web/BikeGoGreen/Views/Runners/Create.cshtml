@@ -1,4 +1,4 @@
-﻿@model Model.Runner
+﻿@model BikeGoGreen.Models.RunnerModel
 
 @{
     ViewBag.Title = "Nuevo";
@@ -8,27 +8,38 @@
 <h2>Nuevo</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Corredor</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Runner.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Runner.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Runner.FullName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EMail, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Runner.EMail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Runner.EMail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Runner.EMail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Runner.GroupName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(
+                    model => model.Runner.GroupName,
+                    Model.Groups.Select(x => new SelectListItem { Value = x.GroupName, Text = x.Description }),
+                    new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Runner.GroupName, "", new { @class = "text-danger" })
             </div>
         </div>
 

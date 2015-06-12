@@ -39,7 +39,11 @@ namespace BikeGoGreen.Controllers
         // GET: Runners/Create
         public ActionResult Create()
         {
-            return View();
+            var m = new Models.RunnerModel()
+            {
+                Groups = db.Groups.ToList()
+            };
+            return View(m);
         }
 
         // POST: Runners/Create
@@ -47,7 +51,7 @@ namespace BikeGoGreen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FullName,EMail")] Runner runner)
+        public ActionResult Create([Bind(Include = "Id,FullName,EMail,GroupName")] Runner runner)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +75,12 @@ namespace BikeGoGreen.Controllers
             {
                 return HttpNotFound();
             }
-            return View(runner);
+            var m = new Models.RunnerModel()
+            {
+                Groups = db.Groups.ToList(),
+                Runner = runner,
+            };
+            return View(m);
         }
 
         // POST: Runners/Edit/5
@@ -79,13 +88,14 @@ namespace BikeGoGreen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FullName,EMail")] Runner runner)
+        public ActionResult Edit([Bind(Include = "Id,FullName,EMail,GroupName")] Runner runner)
         {
             if (ModelState.IsValid)
             {
                 var r = db.Runners.FirstOrDefault(x => x.Id.Equals(runner.Id));
                 r.FullName = runner.FullName;
                 r.EMail = runner.EMail;
+                r.GroupName = runner.GroupName;
                 db.SubmitChanges();
                 return RedirectToAction("Index");
             }

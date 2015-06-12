@@ -12,6 +12,12 @@ namespace BikeGoGreen.Models
         public String Email { get; set; }
     }
 
+    public class RunnerModel
+    {
+        public Model.Runner Runner { get; set; }
+        public IEnumerable<Model.Group> Groups { get; set; }
+    }
+
     public class HomeIndexModel
     {
 
