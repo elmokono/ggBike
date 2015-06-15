@@ -247,7 +247,6 @@ void sensorLoop()
     //add spin counter
     digitalWrite(ggSpinLedPin, HIGH);
     float ggSpinsPerSecond = (1000.0 / (millis() - ggLastSpinMillis)); //spins per second (1/x*1000)
-    Serial.println(String((millis() - ggLastSpinMillis)));
     ggLastSpinMillis = millis();
     ggSampleAvg += ggSpinsPerSecond;
     ggSpinsCount ++;
@@ -268,7 +267,6 @@ void sensorLoop()
     }
 
     String val = "{\'Spins':'" + String(count) + "','StartMillis':'" + String(ggStartMillis) + "','EndMillis':'" + String(endMillis) + "'}";
-    //String val = "{\'Spins':'" + String(count) + "','SampleAvg':'" + String(ggSampleAvg) + "','Threshold':'" + String(ggThreshold) + "','StartMillis':'" + String(ggStartMillis) + "','EndMillis':'" + String(endMillis) + "'}";
     Serial.println(buildResponse("Spins", true, val));
 
     ggStartMillis = millis();
