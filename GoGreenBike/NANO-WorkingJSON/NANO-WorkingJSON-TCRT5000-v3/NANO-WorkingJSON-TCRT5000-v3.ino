@@ -157,7 +157,7 @@ void stageLoop()
   {
     //auto-calibration
     ggThreshold = ((calMaxValue - calMinValue) / 2) + calMinValue;
-    Serial.println(String(ggThreshold));
+    //Serial.println(String(ggThreshold));
     programStage = STAGE_SENSING;
   }
 }
