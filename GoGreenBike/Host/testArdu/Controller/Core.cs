@@ -18,7 +18,8 @@ namespace goGreenBike.Controller
         protected goGreenBike.UI.Engine.ArduinoInterface ui;
         protected String deviceID = ConfigurationManager.AppSettings["deviceID"];
         protected Int32 serialPortSpeed = Int32.Parse(ConfigurationManager.AppSettings["serialPortSpeed"]);
-
+        protected String serialPort = ConfigurationManager.AppSettings["serialPort"];
+        
         public Core()
         {
             //poll
@@ -27,7 +28,7 @@ namespace goGreenBike.Controller
             //poller.Elapsed += poller_Elapsed;
 
             //ui
-            ui = new UI.Engine.ArduinoInterface(serialPortSpeed);
+            ui = new UI.Engine.ArduinoInterface(serialPort, serialPortSpeed);
             ui.OnConnect += ui_OnConnect;
             ui.OnDisconnect += ui_OnDisconnect;
             ui.ResetClick += ui_ResetClick;
