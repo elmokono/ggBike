@@ -18,14 +18,14 @@ namespace goGreenBike.Controller
         protected goGreenBike.UI.Engine.ArduinoInterface ui;
         protected String deviceID = ConfigurationManager.AppSettings["deviceID"];
         protected Int32 serialPortSpeed = Int32.Parse(ConfigurationManager.AppSettings["serialPortSpeed"]);
-        
+
         public Core()
         {
             //poll
-            poller = new System.Timers.Timer();
-            poller.Interval = 1000;
-            poller.Elapsed += poller_Elapsed;
-            
+            //poller = new System.Timers.Timer();
+            //poller.Interval = 1000;
+            //poller.Elapsed += poller_Elapsed;
+
             //ui
             ui = new UI.Engine.ArduinoInterface(serialPortSpeed);
             ui.OnConnect += ui_OnConnect;
@@ -37,9 +37,8 @@ namespace goGreenBike.Controller
 
         void ui_Spins(long millis, double spins)
         {
-            Console.WriteLine("Spins {0} in {1}m",
-                spins, millis
-            );
+            renderStats(millis, spins);
+
             using (var db = new Model.DatabaseEntitiesDataContext())
             {
                 db.AddSpins(deviceID, Convert.ToInt32(millis), spins);
@@ -52,7 +51,7 @@ namespace goGreenBike.Controller
             Action(UserActions.Reset);
             poller_Elapsed(poller, null);
         }
-        
+
         void ui_OnDisconnect()
         {
             //
@@ -60,13 +59,13 @@ namespace goGreenBike.Controller
 
         void ui_OnConnect()
         {
-            poller.Start();
+            //poller.Start();
         }
 
         ~Core()
         {
-            poller.Elapsed -= poller_Elapsed;
-            poller.Stop();
+            //poller.Elapsed -= poller_Elapsed;
+            //poller.Stop();
         }
 
         public void Action(UserActions action)
@@ -75,24 +74,43 @@ namespace goGreenBike.Controller
 
             //switch (action)
             //{
-                //case UserActions.Reset:
-                //    break;
+            //case UserActions.Reset:
+            //    break;
             //}
+        }
+
+        void renderStats(long millis, double spins)
+        {
+            double circ = 0.0;
+            using (var db = new Model.DatabaseEntitiesDataContext())
+            {
+                circ = double.Parse(ConfigurationManager.AppSettings["deviceCirc"]);
+            }
+            
+            var kmh = (circ / 1000.0 / 1000.0 * spins) / (millis / 1000.0 / 60.0 / 60.0);
+            
+            Console.Clear();
+            Console.WriteLine(new String('-', 79));
+            Console.WriteLine("| Arduino Controller");
+            Console.WriteLine(new String('-', 79));
+            Console.WriteLine("Current spins: {0:#0.00}", spins);
+            Console.WriteLine("Current millis lapse: {0}ms", millis);
+            Console.WriteLine("Current speed: {0:#0.00}km/h", kmh);
         }
 
         void poller_Elapsed(object sender, ElapsedEventArgs e)
         {
-           // var displayText = String.Empty;            
-           // //CONSOLE
-           // //Console.Clear();
-           // //Console.WriteLine("MIMO");
-           // //Console.WriteLine("----------------------------------------------");
-           // //Console.WriteLine("Current Plugin: {0}", currentPlugin.Name);
-           //// Console.WriteLine("UI State: {0}", ui.GetCurrentStatus());
-           // //Console.WriteLine("Now Displaying: {0}", displayText);
-           // Console.ForegroundColor = ConsoleColor.Magenta;
-           // Console.WriteLine("{0}: {1}", DateTime.Now, displayText);
-           // Console.ForegroundColor = ConsoleColor.Gray;
+            // var displayText = String.Empty;            
+            // //CONSOLE
+            // //Console.Clear();
+            // //Console.WriteLine("MIMO");
+            // //Console.WriteLine("----------------------------------------------");
+            // //Console.WriteLine("Current Plugin: {0}", currentPlugin.Name);
+            //// Console.WriteLine("UI State: {0}", ui.GetCurrentStatus());
+            // //Console.WriteLine("Now Displaying: {0}", displayText);
+            // Console.ForegroundColor = ConsoleColor.Magenta;
+            // Console.WriteLine("{0}: {1}", DateTime.Now, displayText);
+            // Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }
